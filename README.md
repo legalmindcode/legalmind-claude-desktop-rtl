@@ -134,13 +134,15 @@ Get-AppLockerFileInformation -Path '<path>\AutoHotkey64.exe'
 
 ## פרויקטים מקבילים
 
-יש עוד כלים שפותרים RTL בקלוד, וכל אחד בוחר פשרה אחרת:
+יש כמה כלים לתיקון RTL בקלוד, וכולם - למיטב בדיקתנו - שייכים למשפחה טכנית אחת: הם מחלצים את חבילת האפליקציה (asar), מזריקים לתוכה CSS ו-JavaScript, ואורזים אותה מחדש. זו גישה חזקה בהרבה מזו שכאן, והיא משלמת על כך במקום אחר.
 
-- [shraga100/claude-desktop-rtl-patch](https://github.com/shraga100/claude-desktop-rtl-patch) - מפטצ' את קבצי האפליקציה ומשיג RTL מלא בתצוגת התשובות, כולל יישור. המחיר: הרצה עם הרשאות מנהל, עקיפת אימות השלמות של האפליקציה, והרצה מחדש אחרי כל עדכון.
-- [liorshaya/claude-desktop-rtl](https://github.com/liorshaya/claude-desktop-rtl) - פתרון RTL לקלוד בדסקטופ וב-claude.ai, כולל טקסט, טבלאות ונוסחאות.
-- תוספי דפדפן ל-claude.ai, שמזריקים CSS ולכן פותרים גם את היישור - בסביבה שבה אי אפשר להריץ AutoHotkey זו החלופה הטובה.
+- [liorshaya/claude-desktop-rtl](https://github.com/liorshaya/claude-desktop-rtl) - הפתרון המקיף ביותר: מטפל בתיבת הקלט, בתשובות, בטבלאות, ברשימות, בנוסחאות ובארטיפקטים, ומתקן גם יישור. תומך גם ב-macOS וגם ב-claude.ai. משנה את `claude.exe` ואת `app.asar`, מכבה את מנגנון אימות השלמות של Electron, ומחזיק watcher שמחיל את התיקון מחדש אחרי כל עדכון של האפליקציה.
+- [shraga100/claude-desktop-rtl-patch](https://github.com/shraga100/claude-desktop-rtl-patch) - אותה משפחה: הזרקה ל-asar, החלפת ה-hash בתוך `claude.exe` והחלפת תעודה, עם התרוממות אוטומטית ל-UAC.
+- קיימות גם גרסאות ל-macOS באותה שיטה, ותוספי דפדפן ל-claude.ai שמזריקים CSS ולכן פותרים גם את היישור. בסביבה שבה אי אפשר להריץ AutoHotkey, תוסף דפדפן הוא החלופה הטובה.
 
-**מה מייחד את הכלי הזה:** הוא היחיד שלא נוגע באפליקציה בכלל. הוא לא דורש הרשאות מנהל, לא משנה שום קובץ, ולכן אין מה שיישבר בעדכון. במחיר הזה הוא גם מוגבל: הוא מטפל בתיבת ההקלדה בלבד ואינו יכול לתקן יישור.
+**מה מייחד את הכלי הזה:** הוא היחיד שאינו נוגע באפליקציה בכלל. הוא אינו דורש הרשאות מנהל, אינו משנה שום קובץ, אינו מכבה שום מנגנון אבטחה, ולכן אין בו מה שיישבר בעדכון ואין צורך במנגנון שמחיל את עצמו מחדש. במחיר הזה הוא גם צנוע בהרבה: הוא מטפל בתיבת ההקלדה בלבד, אינו נוגע בתשובות, ואינו יכול לתקן יישור.
+
+שני הבדלים נוספים ששווה להכיר לפני שבוחרים: הכלי הזה מוסיף תו בלתי-נראה לטקסט שנשלח, בעוד הפתרונות מבוססי ה-CSS משאירים את הטקסט זהה בית-בית; ומנגד, הם עובדים ברמת המסמך ולכן ניחוש הכיוון שלהם מתבסס על התו החזק הראשון, בעוד תו ההטמעה כאן הוא הוראה מפורשת ולכן עמיד גם במשפט עברי שנפתח במילה אנגלית.
 
 ## אפליקציות אחרות
 
@@ -210,7 +212,9 @@ Character order is fixed but alignment stays left - in an input locked to `direc
 
 ## Related projects and scope
 
-[shraga100/claude-desktop-rtl-patch](https://github.com/shraga100/claude-desktop-rtl-patch) patches the app files and achieves full RTL in the rendered responses including alignment, at the cost of admin rights, bypassing the app's integrity validation, and re-running after every update. [liorshaya/claude-desktop-rtl](https://github.com/liorshaya/claude-desktop-rtl) covers Claude Desktop and claude.ai. Browser extensions for claude.ai inject CSS and therefore fix alignment too. What is distinctive here is that this tool never touches the application: no admin rights, no modified files, nothing to break on update - and, as the trade-off, no alignment fix.
+Every other Claude Desktop RTL tool we could find belongs to one technical family: extract the app's asar bundle, inject CSS and JavaScript, repack. [liorshaya/claude-desktop-rtl](https://github.com/liorshaya/claude-desktop-rtl) is the most complete of them - input box, responses, tables, lists, math and artifacts, alignment included, on macOS as well - and it modifies `claude.exe` and `app.asar`, turns off Electron's asar integrity validation, and keeps a watcher to re-apply itself after every app update. [shraga100/claude-desktop-rtl-patch](https://github.com/shraga100/claude-desktop-rtl-patch) is the same family, elevating through UAC. Browser extensions for claude.ai inject CSS and fix alignment too.
+
+What is distinctive here is that this tool never touches the application: no admin rights, no modified files, no security mechanism disabled, nothing to break on update and nothing to re-apply. The trade-offs are equally clear - it covers the input box only, never the responses, cannot fix alignment, and it does add an invisible character to the text you send, where the CSS-based tools leave your text byte-for-byte identical. In the other direction, because U+202B is an explicit instruction rather than a first-strong guess, it still resolves correctly for a Hebrew sentence that opens with an English word.
 
 The ChatGPT desktop app on Windows (the OpenAI.Codex package, which contains both ChatGPT and Codex) was tested with the same mixed Hebrew sentences, single-line and multi-line, with no seed character, across its Chat, Work and Codex surfaces. All three render Hebrew correctly on their own, including right alignment, so this helper is neither needed nor useful there.
 

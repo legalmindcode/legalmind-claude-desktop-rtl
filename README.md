@@ -52,7 +52,9 @@ winget install AutoHotkey.AutoHotkey --version 2.0.26 --scope user
 
 ## שימוש
 
-ברוב המקרים אין מה לעשות. הזריעה האוטומטית קורית בארבעה מצבים: בפתיחת חלון קלוד (פעם אחת לכל חלון), אחרי כל שליחת הודעה ב-Enter, אחרי ירידת שורה (Shift+Enter), ובפתיחת צ'אט חדש (Ctrl+N). בנוסף, אם ההודעה הנוכחית עדיין לא נזרעה, מעבר פריסת מקלדת לעברית משלים את הזריעה.
+ברוב המקרים אין מה לעשות. הזריעה האוטומטית קורית בחמישה מצבים: בפתיחת חלון קלוד, בכל חזרה לפוקוס על קלוד ממקום אחר (מוגבל לפעם ב-5 שניות), אחרי כל שליחת הודעה ב-Enter, אחרי ירידת שורה (Shift+Enter), ובפתיחת צ'אט חדש (Ctrl+N). בנוסף, אם ההודעה הנוכחית עדיין לא נזרעה, מעבר פריסת מקלדת לעברית משלים את הזריעה.
+
+הזריעה בחזרה לפוקוס נועדה לכסות את מה שהסקריפט לא יכול לראות - פתיחת שיחה או שליחה בלחיצת עכבר, שמרוקנות את התיבה בלי לירות שום קיצור. היא מתבצעת בנקודת הסמן ובלי להזיז אותו, כדי שטיוטה פתוחה לא תופרע. המחיר: אם חוזרים לטיוטה קיימת, נוסף לה תו בלתי-נראה שאינו משנה דבר בתצוגה אך כן נוסע עם ההודעה.
 
 הזריעה מחדש אחרי כל ירידת שורה היא קריטית ולא קוסמטית: כל שבירת שורה פותחת פסקה חדשה מבחינת אלגוריתם הכיווניות של יוניקוד, ותו הכיוון לא חוצה גבול פסקה. בלי זה, השורה הראשונה נראית מושלמת וכל שורה אחריה חוזרת להיות שבורה.
 
@@ -69,7 +71,7 @@ Ctrl+Alt+J מוסיף את התו בנקודת הסמן והוא התיקון ה
 
 - **הסדר נכון, היישור לא.** זו המגבלה המהותית, והיא נמדדה: הרצנו את אותם משפטים מעורבים בכרומיום ומדדנו את המיקום של כל תו בנפרד. סדר התווים עם הזריעה **זהה תו-בתו** לאלמנט RTL אמיתי - מקפים, פסיקים, נקודה סופית, סוגריים, מספרים ותאריכים כולם במקום הנכון. מה שנשאר שונה הוא היישור בלבד: הטקסט צמוד לשוליים השמאליים במקום לימניים. בשורה או שתיים בקושי מרגישים; בפסקה ארוכה שנשברת לכמה שורות זה כן מרגיש, כי השורה האחרונה יושבת בצד שמאל. בתיבה שנעולה ל-`direction: ltr` כמו כאן, יישור הוא תכונת CSS ושום תו יוניקוד לא יכול לשנות אותו - זו תקרה מובנית של כל פתרון מבוסס מקלדת, ולא באג.
 - **התו נשלח עם ההודעה.** התו הבלתי-נראה הוא חלק מהטקסט שנשלח לקלוד (אין לו השפעה מעשית על התשובות - זהו תו כיווניות סטנדרטי שמודלים פוגשים כל הזמן בטקסט RTL), והוא נשאר בטקסט גם כשמעתיקים אותו למקום אחר. **חשוב למשפטנים ולמתכנתים:** אם מעתיקים טקסט מהודעה לתוך מסמך משפטי או לקוד, מומלץ להדביק דרך "הדבקה ללא עיצוב" או להסיר את התו; תווי כיוון בלתי-נראים יכולים לשנות סדר תצוגה של טקסט סמוך במסמך היעד, ו-GitHub וכלי פיתוח מסמנים אותם באזהרה.
-- **פעולות עכבר לא מפעילות זריעה** - מעבר לשיחה אחרת בסרגל הצד, פתיחת צ'אט חדש בלחיצה, או שליחה בלחיצה על כפתור השליחה. הסקריפט מזהה מקלדת בלבד, וכותרת החלון של קלוד אינה משתנה בין שיחות כך שאין לו אות אחר להישען עליו. הפתרון: Ctrl+Alt+J פעם אחת, או פשוט לשלוח את ההודעה הבאה עם Enter.
+- **פעולות עכבר בתוך החלון אינן מזוהות** - מעבר לשיחה אחרת בסרגל הצד, פתיחת צ'אט חדש בלחיצה, או שליחה בלחיצה על כפתור השליחה. הסקריפט מזהה מקלדת בלבד, וכותרת החלון של קלוד אינה משתנה בין שיחות כך שאין לו אות אחר להישען עליו. מה שכן מכסה חלק גדול מהמקרים: כל חזרה לפוקוס על קלוד מכל מקום אחר מפעילה זריעה. אם בכל זאת יצא שבור - Ctrl+Alt+J פעם אחת מתקן, וגם שליחת ההודעה הבאה עם Enter מחזירה את הזריעה.
 - **מחיקת הטיוטה מוחקת גם את התו** (Ctrl+A והקלדה מחדש, או Backspace בתחילת השורה), והסקריפט לא יודע על כך. אם התצוגה התקלקלה פתאום באמצע כתיבה - Ctrl+Alt+J מתקן מיד.
 - **זריעה לתוך טיוטה קיימת מזיזה את הסמן לסוף.** קורה כשהסקריפט מופעל כשטיוטה כבר פתוחה, או כשעוברים לעברית באמצע טיוטה שלא נזרעה. אם ערכתם באמצע המשפט, חזרו לנקודה עם העכבר.
 - **בחירת פקודת slash או mention עם Enter** נספרת אצל הסקריפט כשליחת הודעה, כי הוא לא רואה את התפריט הקופץ. התוצאה: תו נוסף עשוי להיזרע והסמן יקפוץ לסוף. הנזק חד-פעמי ומתאפס בשליחה האמיתית הבאה.
@@ -80,7 +82,7 @@ Ctrl+Alt+J מוסיף את התו בנקודת הסמן והוא התיקון ה
 
 ## אבטחה ופרטיות
 
-הכלי נכתב מתוך הנחה שתרצו לוודא בעצמכם שהוא בטוח. לכן הוא מופץ כקוד מקור קריא בלבד, לא כקובץ הרצה מקומפל: קובץ אחד, 236 שורות - כ-150 שורות קוד והשאר הערות תיעוד וריווח.
+הכלי נכתב מתוך הנחה שתרצו לוודא בעצמכם שהוא בטוח. לכן הוא מופץ כקוד מקור קריא בלבד, לא כקובץ הרצה מקומפל: קובץ אחד, 264 שורות - כ-165 שורות קוד והשאר הערות תיעוד וריווח.
 
 **מה הוא עושה, במדויק:** כשחלון קלוד הראשי פעיל, הוא מקליד תו יוניקוד בלתי-נראה אחד לתיבת הקלט, יחד עם מקשי ניווט (Ctrl+Home ו-Ctrl+End) שמחזירים את הסמן למקומו. זה כל מה שהוא מקליד אי-פעם, והוא מכוון רק לחלון הראשי של קלוד - דיאלוגים מקומיים, כמו בוחר הקבצים, מסוננים לפי window class. בנוסף הוא בודק כל 300 מילישניות אילו חלונות של `Claude.exe` קיימים ומה כותרת החלון הפעיל, כדי לזהות מעבר לשיחה אחרת; הכותרת נשמרת בזיכרון בלבד לצורך השוואה, אינה נכתבת לדיסק ואינה נשלחת לשום מקום. כל מסלולי הזריעה האוטומטיים בודקים מחדש ברגע הביצוע שחלון קלוד הראשי פעיל ושפריסת המקלדת עברית.
 
@@ -166,7 +168,7 @@ MIT. ראו [LICENSE](LICENSE).
 
 ## What it does
 
-The Claude Desktop message input on Windows is locked to left-to-right, which breaks Hebrew typing: punctuation lands on the wrong side and mixed Hebrew/Latin/number runs reorder. This single-file AutoHotkey v2 script (236 lines, about 150 of them code) fixes it at the keyboard level by seeding one invisible Unicode character (U+202B, RIGHT-TO-LEFT EMBEDDING) at the start of each message, and re-seeding after every Shift+Enter, since a line break ends a bidi paragraph.
+The Claude Desktop message input on Windows is locked to left-to-right, which breaks Hebrew typing: punctuation lands on the wrong side and mixed Hebrew/Latin/number runs reorder. This single-file AutoHotkey v2 script (264 lines, about 165 of them code) fixes it at the keyboard level by seeding one invisible Unicode character (U+202B, RIGHT-TO-LEFT EMBEDDING) at the start of each message, and re-seeding after every Shift+Enter, since a line break ends a bidi paragraph.
 
 It affects **only what you type**. Claude's own responses are rendered exactly as the app renders them, and the character order is fixed while the text stays **left aligned**.
 
@@ -208,7 +210,7 @@ Recommended: firewall-block `AutoHotkey64.exe` outbound - the tool is fully offl
 
 ## Known limitations
 
-Character order is fixed but alignment stays left - in an input locked to `direction: ltr`, alignment is a CSS property that no control character can change, so this is an inherent ceiling of any keyboard-level approach rather than a bug. The invisible character travels with your message and survives copy-paste, so strip it before pasting message text into legal documents or code. Mouse actions - switching chats, starting a new chat, or clicking send - trigger no reseeding, because the window title does not change between conversations and the script has no other signal; press Ctrl+Alt+J once, or just send the next message with Enter. Clearing a draft also clears the seed. A seed landing in an existing draft moves the caret to the end. Picking a slash command or mention with Enter counts as a send, so one extra character may be seeded; it self-resets on the next real send. Pasted multi-line text is protected on its first line only, since the script never reads the clipboard. If focus is in another field of the Claude window at seed time, a single character may land there - clear it with Ctrl+A then Delete. If Claude runs elevated and the script does not, Windows UIPI silently blocks injection; run both unelevated.
+Character order is fixed but alignment stays left - in an input locked to `direction: ltr`, alignment is a CSS property that no control character can change, so this is an inherent ceiling of any keyboard-level approach rather than a bug. The invisible character travels with your message and survives copy-paste, so strip it before pasting message text into legal documents or code. Mouse actions inside the window - switching chats, starting a new chat, or clicking send - are invisible to the script, because the window title does not change between conversations and there is no other signal; returning focus to Claude from anywhere else does reseed, which covers most of those cases, and Ctrl+Alt+J covers the rest. That focus-return seed is placed at the caret without moving it, so an open draft is never disturbed, at the cost of one extra invisible character in that draft. Clearing a draft also clears the seed. A seed landing in an existing draft moves the caret to the end. Picking a slash command or mention with Enter counts as a send, so one extra character may be seeded; it self-resets on the next real send. Pasted multi-line text is protected on its first line only, since the script never reads the clipboard. If focus is in another field of the Claude window at seed time, a single character may land there - clear it with Ctrl+A then Delete. If Claude runs elevated and the script does not, Windows UIPI silently blocks injection; run both unelevated.
 
 ## Related projects and scope
 

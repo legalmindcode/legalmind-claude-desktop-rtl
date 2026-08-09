@@ -6,6 +6,10 @@
 
 הכלי הזה הוא סקריפט AutoHotkey קטן וקריא שפותר את זה ברמת המקלדת: בכל פעם שמתחילים הודעה חדשה בקלוד, הוא שותל תו יוניקוד בלתי-נראה אחד (U+202B, RIGHT-TO-LEFT EMBEDDING) בתחילת השורה, והעברית מוצגת כמו שצריך - מימין לשמאל.
 
+![לפני ואחרי](before-after.png)
+
+צילום אמיתי מתוך Claude Desktop, אותו משפט בדיוק בשני המקרים.
+
 **עקרונות התכנון:**
 
 - **שקוף וניתן לביקורת** - קובץ טקסט אחד, בלי קבצים מקומפלים, בלי רשת, בלי לוגים.
@@ -95,6 +99,10 @@ winget install AutoHotkey.AutoHotkey --version 2.0.26 --scope user
 - **תוכנית פרישה:** ברגע שאנת'רופיק יוסיפו תמיכת RTL מובנית לתיבת הקלט - פשוט מוחקים את הסקריפט. עד אז אפשר לעקוב אחרי [issue #38005](https://github.com/anthropics/claude-code/issues/38005) (או כל issue עדכני אחר על תמיכת RTL - הבקשות מאוחדות מעת לעת). התו הזרוע לא מתנגש עם RTL מובנה אם וכשיגיע.
 - **חלופה בדפדפן:** בסביבה שבה אי אפשר להריץ AutoHotkey (מחשב ארגוני נעול), אפשר לעבוד עם claude.ai בדפדפן בתוספת הרחבת RTL.
 
+## אפליקציות אחרות
+
+הכלי מכוון ל-Claude Desktop בלבד, וזו החלטה מבוססת בדיקה ולא הנחה. בדקנו את אפליקציית ChatGPT לשולחן העבודה (חבילת OpenAI.Codex בווינדוס) עם אותו משפט מעורב בדיוק ובלי שום תו זריעה: **היא מציגה עברית נכון מלכתחילה, כולל יישור לימין.** אין שם מה לתקן, והפעלת הכלי הזה עליה רק תוסיף תו מיותר לטקסט. אם יום אחד זה ישתנה, ההתאמה היא שינוי של מחרוזת אחת בסקריפט - שם התהליך.
+
 ## רישיון
 
 MIT. ראו [LICENSE](LICENSE).
@@ -104,6 +112,8 @@ MIT. ראו [LICENSE](LICENSE).
 ---
 
 # Claude RTL Helper (English)
+
+![Before and after](before-after.png)
 
 The Claude Desktop (Windows) message box is locked to left-to-right, which breaks Hebrew typing - punctuation lands on the wrong side and mixed Hebrew/Latin/number runs reorder. This single-file AutoHotkey v2 script (~220 lines, mostly documentation comments) fixes it at the keyboard level: whenever a new message starts, it seeds one invisible Unicode character (U+202B, RIGHT-TO-LEFT EMBEDDING) at the start of the input - and only while the active keyboard layout is Hebrew, so English messages are never touched.
 

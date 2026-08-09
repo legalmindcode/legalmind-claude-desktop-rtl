@@ -135,8 +135,9 @@ WatchClaude() {
             dead.Push(h)
     for h in dead {
         winSeeded.Delete(h)
-        winTitle.Delete(h)
-    }
+        if winTitle.Has(h)              ; Delete throws on a missing key, and
+            winTitle.Delete(h)          ; a window can be seeded before the
+    }                                   ; watcher ever recorded its title
     if !rtlOn
         return
     hwnd := ClaudeMainActive()

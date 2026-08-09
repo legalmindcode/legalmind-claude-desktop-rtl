@@ -80,7 +80,7 @@ Ctrl+Alt+J מוסיף את התו בנקודת הסמן והוא התיקון ה
 
 ## אבטחה ופרטיות
 
-הכלי נכתב מתוך הנחה שתרצו לוודא בעצמכם שהוא בטוח. לכן הוא מופץ כקוד מקור קריא בלבד, לא כקובץ הרצה מקומפל: קובץ אחד, 218 שורות - כ-137 שורות קוד וכ-80 שורות הערות תיעוד וריווח.
+הכלי נכתב מתוך הנחה שתרצו לוודא בעצמכם שהוא בטוח. לכן הוא מופץ כקוד מקור קריא בלבד, לא כקובץ הרצה מקומפל: קובץ אחד, 236 שורות - כ-150 שורות קוד והשאר הערות תיעוד וריווח.
 
 **מה הוא עושה, במדויק:** כשחלון קלוד הראשי פעיל, הוא מקליד תו יוניקוד בלתי-נראה אחד לתיבת הקלט, יחד עם מקשי ניווט (Ctrl+Home ו-Ctrl+End) שמחזירים את הסמן למקומו. זה כל מה שהוא מקליד אי-פעם, והוא מכוון רק לחלון הראשי של קלוד - דיאלוגים מקומיים, כמו בוחר הקבצים, מסוננים לפי window class. בנוסף הוא בודק כל 300 מילישניות אילו חלונות של `Claude.exe` קיימים ומה כותרת החלון הפעיל, כדי לזהות מעבר לשיחה אחרת; הכותרת נשמרת בזיכרון בלבד לצורך השוואה, אינה נכתבת לדיסק ואינה נשלחת לשום מקום. כל מסלולי הזריעה האוטומטיים בודקים מחדש ברגע הביצוע שחלון קלוד הראשי פעיל ושפריסת המקלדת עברית.
 
@@ -166,7 +166,7 @@ MIT. ראו [LICENSE](LICENSE).
 
 ## What it does
 
-The Claude Desktop message input on Windows is locked to left-to-right, which breaks Hebrew typing: punctuation lands on the wrong side and mixed Hebrew/Latin/number runs reorder. This single-file AutoHotkey v2 script (218 lines, about 137 of them code) fixes it at the keyboard level by seeding one invisible Unicode character (U+202B, RIGHT-TO-LEFT EMBEDDING) at the start of each message, and re-seeding after every Shift+Enter, since a line break ends a bidi paragraph.
+The Claude Desktop message input on Windows is locked to left-to-right, which breaks Hebrew typing: punctuation lands on the wrong side and mixed Hebrew/Latin/number runs reorder. This single-file AutoHotkey v2 script (236 lines, about 150 of them code) fixes it at the keyboard level by seeding one invisible Unicode character (U+202B, RIGHT-TO-LEFT EMBEDDING) at the start of each message, and re-seeding after every Shift+Enter, since a line break ends a bidi paragraph.
 
 It affects **only what you type**. Claude's own responses are rendered exactly as the app renders them, and the character order is fixed while the text stays **left aligned**.
 

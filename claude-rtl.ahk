@@ -41,6 +41,7 @@ global rtlOn := true
 global winSeeded := Map()            ; hwnd, is its current draft seeded?
 global winTitle := Map()             ; hwnd, last seen window title
 global claudeGone := 0               ; watcher ticks with no Claude present
+global seedDeadline := 0             ; latest tick a deferred seed may wait for
 
 A_IconTip := "Claude RTL: on"
 A_TrayMenu.Add(TOGGLE_LABEL, (*) => ToggleRtl())
@@ -86,8 +87,11 @@ SeedLineStart() {
                                      ; already seeded - never double up
     if !IsHebrewLayout()
         return                       ; the watcher re-arms on layout switch
-    if (A_TimeIdlePhysical < 250) {
-        SetTimer(SeedLineStart, -200)   ; user is typing - retry after a pause
+    ; Wait for a gap in typing so the Home/End navigation cannot interleave
+    ; with real keystrokes - but never wait forever. Someone who types a
+    ; whole message without a 250ms pause would otherwise send it unseeded.
+    if (A_TimeIdlePhysical < 250 && A_TickCount < seedDeadline) {
+        SetTimer(SeedLineStart, -200)
         return
     }
     Send("^{Home}")
@@ -99,11 +103,14 @@ SeedLineStart() {
 ; Seed the fresh line created by Shift+Enter. Every line break starts a new
 ; bidi paragraph, so without this the second line and onward render LTR
 ; again - the single most visible failure of the one-seed-per-message
-; approach. Fires immediately and synchronously (no idle guard, no shared
-; timer) so that every line break gets its own seed even while typing fast.
+; approach. Each key press schedules its own one-shot timer, so a rapid
+; second Shift+Enter is never dropped and the hotkey thread never blocks.
 ; {Home} and {End} bracket the new line, keeping the mark at its start.
+ArmNewLineSeed() {
+    SetTimer(() => SeedNewLine(), -60)  ; a fresh timer per press, on purpose
+}
+
 SeedNewLine() {
-    Sleep 60                         ; let the editor create the new line
     if (!rtlOn || !ClaudeMainActive() || !IsHebrewLayout())
         return
     Send("{Home}")
@@ -155,8 +162,10 @@ WatchClaude() {
         winTitle[hwnd] := title
         winSeeded[hwnd] := false
     }
-    if (!winSeeded.Get(hwnd, false) && IsHebrewLayout())
+    if (!winSeeded.Get(hwnd, false) && IsHebrewLayout()) {
+        global seedDeadline := A_TickCount + 1500
         SetTimer(SeedLineStart, -250)
+    }
 }
 
 ; ---- toggle -----------------------------------------------------------------
@@ -171,7 +180,11 @@ ToggleRtl() {
         SetTimer(SeedLineStart, 0)   ; cancel anything pending
     }
     ToolTip("Claude RTL " (rtlOn ? "ON" : "OFF"))
-    SetTimer(() => ToolTip(), -1200)
+    SetTimer(ClearToolTip, -1200)    ; named, so rapid toggles reset one timer
+}
+
+ClearToolTip() {
+    ToolTip()
 }
 
 ^!+r::ToggleRtl()                    ; global on purpose - usable anywhere
@@ -184,8 +197,8 @@ ToggleRtl() {
 
 ~Enter::        AfterSend()
 ~NumpadEnter::  AfterSend()
-~+Enter::       SeedNewLine()
-~+NumpadEnter:: SeedNewLine()
+~+Enter::       ArmNewLineSeed()
+~+NumpadEnter:: ArmNewLineSeed()
 ~^n::           AfterNewChat()
 ^!j::           ManualSeed()
 
@@ -194,20 +207,22 @@ ToggleRtl() {
 ; Message sent: the input is empty again, so mark this window unseeded and
 ; schedule a fresh seed. Does nothing when focus is in a dialog.
 AfterSend() {
-    global winSeeded
+    global winSeeded, seedDeadline
     hwnd := ClaudeMainActive()
     if !hwnd
         return
     winSeeded[hwnd] := false
+    seedDeadline := A_TickCount + 1500
     SetTimer(SeedLineStart, -250)
 }
 
 AfterNewChat() {
-    global winSeeded
+    global winSeeded, seedDeadline
     hwnd := ClaudeMainActive()
     if !hwnd
         return
     winSeeded[hwnd] := false
+    seedDeadline := A_TickCount + 2000
     SetTimer(SeedLineStart, -500)    ; give the new chat's input time to mount
 }
 

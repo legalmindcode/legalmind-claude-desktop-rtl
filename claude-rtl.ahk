@@ -42,6 +42,8 @@ global winSeeded := Map()            ; hwnd, is its current draft seeded?
 global winTitle := Map()             ; hwnd, last seen window title
 global claudeGone := 0               ; watcher ticks with no Claude present
 global seedDeadline := 0             ; latest tick a deferred seed may wait for
+global prevActive := 0               ; last Claude window seen as active
+global lastSeedAt := 0               ; tick of the last activation seed
 
 A_IconTip := "Claude RTL: on"
 A_TrayMenu.Add(TOGGLE_LABEL, (*) => ToggleRtl())
@@ -118,6 +120,21 @@ SeedNewLine() {
     Send("{End}")
 }
 
+; Seed at the caret without moving it. Used when returning to Claude, where
+; the input is usually empty and the caret is already at position 0. If a
+; draft is open instead, the mark lands mid-text: invisible, and inert,
+; because the message is already inside an embedding at that point. The
+; cost of one spare character buys back the case the script cannot detect -
+; a chat opened, switched, or sent with the mouse, which fires no hotkey
+; and does not change the window title.
+SeedAtCaret() {
+    global lastSeedAt
+    if (!rtlOn || !ClaudeMainActive() || !IsHebrewLayout())
+        return
+    SendText(SEED)
+    lastSeedAt := A_TickCount
+}
+
 ; ---- window / layout watcher ------------------------------------------------
 
 ; Ticks every 300ms. Arms a seed whenever the active main Claude window's
@@ -148,8 +165,10 @@ WatchClaude() {
     if !rtlOn
         return
     hwnd := ClaudeMainActive()
-    if !hwnd
+    if !hwnd {
+        global prevActive := 0       ; focus left Claude - arm the next return
         return
+    }
     ; A title change suggests a different conversation is on screen - a
     ; fresh, empty input. This is a best-effort catch for switching chats
     ; with the mouse, which fires no hotkey at all. Note that Claude
@@ -161,6 +180,15 @@ WatchClaude() {
     if (winTitle.Get(hwnd, "") != title) {
         winTitle[hwnd] := title
         winSeeded[hwnd] := false
+    }
+    ; Returning to Claude from elsewhere: the input was very likely replaced
+    ; by a mouse action the script cannot see. Drop a mark at the caret,
+    ; rate limited, so coming back to a chat does not require the hotkey.
+    global prevActive
+    if (hwnd != prevActive) {
+        prevActive := hwnd
+        if (A_TickCount - lastSeedAt > 5000)
+            SetTimer(SeedAtCaret, -350)
     }
     if (!winSeeded.Get(hwnd, false) && IsHebrewLayout()) {
         global seedDeadline := A_TickCount + 1500

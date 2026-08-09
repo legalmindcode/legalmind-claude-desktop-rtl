@@ -99,7 +99,7 @@ SeedLineStart() {
 ; Seed the fresh line created by Shift+Enter. Every line break starts a new
 ; bidi paragraph, so without this the second line and onward render LTR
 ; again - the single most visible failure of the one-seed-per-message
-; approach. Runs immediately and synchronously (no idle guard, no shared
+; approach. Fires immediately and synchronously (no idle guard, no shared
 ; timer) so that every line break gets its own seed even while typing fast.
 ; {Home} and {End} bracket the new line, keeping the mark at its start.
 SeedNewLine() {
@@ -142,9 +142,11 @@ WatchClaude() {
     hwnd := ClaudeMainActive()
     if !hwnd
         return
-    ; A title change means a different conversation is on screen - a fresh,
-    ; empty input. This is what catches switching chats with the mouse,
-    ; which fires no hotkey at all.
+    ; A title change suggests a different conversation is on screen - a
+    ; fresh, empty input. This is a best-effort catch for switching chats
+    ; with the mouse, which fires no hotkey at all. Note that Claude
+    ; Desktop currently keeps the title constant, so in practice this
+    ; branch rarely fires; Ctrl+Alt+J remains the reliable recovery.
     try title := WinGetTitle(hwnd)
     catch
         return

@@ -38,9 +38,9 @@ winget install AutoHotkey.AutoHotkey --version 2.0.26 --scope user
 
    אם `winget` לא מזוהה - התקינו "App Installer" מחנות מיקרוסופט, או השתמשו באפשרות הניידת למטה.
 
-2. **הורידו את `claude-rtl.ahk`** מהמאגר (כפתור הורדת הקובץ הגולמי). אל תעתיקו את הקוד ל-Notepad - הוא יישמר כ-`.txt` ולא יעבוד. לחיצה כפולה על הקובץ מפעילה אותו, ואייקון של AutoHotkey מופיע במגש המערכת; בווינדוס 11 אייקונים חדשים מוסתרים מאחורי החץ למעלה.
+2. **הורידו את [`claude-rtl.ahk`](https://github.com/legalmindcode/legalmind-claude-desktop-rtl/raw/v1.1.0/claude-rtl.ahk)** (קישור ישיר לקובץ מהגרסה המתויגת). אל תעתיקו את הקוד ל-Notepad - הוא יישמר כ-`.txt` ולא יעבוד. לחיצה כפולה על הקובץ מפעילה אותו, ואייקון של AutoHotkey מופיע במגש המערכת; בווינדוס 11 אייקונים חדשים מוסתרים מאחורי החץ למעלה.
 
-   **בדיקה שזה עובד:** עברו לעברית, ובתיבת ההודעה של קלוד הקלידו משפט שמסתיים בנקודה. הנקודה צריכה להופיע בצד שמאל של המשפט. באנגלית הכלי אינרטי לחלוטין, ולכן "לא קורה כלום" באנגלית אינו סימן לכשל.
+   **בדיקה שזה עובד:** עברו לעברית, ובתיבת ההודעה של קלוד הקלידו משפט שמסתיים בנקודה. הנקודה צריכה להופיע בצד שמאל של המשפט. באנגלית הכלי אינרטי לחלוטין, ולכן "לא קורה כלום" באנגלית אינו סימן לכשל. והנקודה נשארה בצד ימין? Ctrl+Alt+J זורע ידנית, ואם גם זה לא שינה - ודאו שאייקון AutoHotkey אכן מופיע במגש.
 
 3. **הפעלה אוטומטית עם ווינדוס** (רשות): Win+R, מקלידים `shell:startup`, ובתיקייה שנפתחה יוצרים **קיצור דרך** לקובץ - לא מעתיקים את הקובץ עצמו, כדי שיישאר עותק אחד לעדכן.
 
@@ -204,7 +204,7 @@ Open a normal, non-elevated terminal:
 winget install AutoHotkey.AutoHotkey --version 2.0.26 --scope user
 ```
 
-The AutoHotkey installer picks its own scope based on whether the terminal is elevated, so an elevated terminal produces a machine-wide install even with `--scope user`. Then download `claude-rtl.ahk` and double-click it. For autostart, put a **shortcut** to it in `shell:startup`. Portable alternative: the official AutoHotkey zip, then drag the script onto `AutoHotkey64.exe` - note that this route registers no `.ahk` association, so an autostart shortcut must target `AutoHotkey64.exe` with the script path as its argument.
+The AutoHotkey installer picks its own scope based on whether the terminal is elevated, so an elevated terminal produces a machine-wide install even with `--scope user`. Then download [`claude-rtl.ahk`](https://github.com/legalmindcode/legalmind-claude-desktop-rtl/raw/v1.1.0/claude-rtl.ahk) (direct link to the tagged version) and double-click it. For autostart, put a **shortcut** to it in `shell:startup`. Portable alternative: the official AutoHotkey zip, then drag the script onto `AutoHotkey64.exe` - note that this route registers no `.ahk` association, so an autostart shortcut must target `AutoHotkey64.exe` with the script path as its argument.
 
 Uninstall: delete the shortcut from `shell:startup` and exit the script from its tray icon. Optionally `winget uninstall AutoHotkey.AutoHotkey`; the script itself leaves nothing behind, while the AutoHotkey installer creates a per-user program folder, a `.ahk` association and an uninstall entry, all removed by that command.
 

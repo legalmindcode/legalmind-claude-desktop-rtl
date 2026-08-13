@@ -2,7 +2,7 @@
 #SingleInstance Force
 
 ; =============================================================================
-;  Claude RTL Helper v2
+;  RTL Helper for Claude Desktop - unofficial community tool, not Anthropic
 ;
 ;  Makes Hebrew render right-to-left in the Claude Desktop message box by
 ;  seeding one invisible RIGHT-TO-LEFT EMBEDDING character (U+202B) at the

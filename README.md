@@ -1,6 +1,6 @@
 <div dir="rtl">
 
-# Claude RTL Helper - עברית מימין לשמאל בתיבת ההקלדה של Claude Desktop
+# RTL Helper for Claude Desktop - עברית מימין לשמאל בתיבת ההקלדה
 
 > פרויקט קהילתי עצמאי. אינו מסונף ל-Anthropic, אינו מקבל ממנה חסות ואינו נתמך על ידה. Claude ו-Anthropic הם סימני מסחר של Anthropic PBC ומוזכרים כאן לזיהוי המוצר שאיתו הכלי עובד בלבד.
 >
@@ -182,7 +182,7 @@ MIT. ראו [LICENSE](LICENSE). הרישיון חל על הסקריפט בלבד
 
 ---
 
-# Claude RTL Helper (English)
+# RTL Helper for Claude Desktop (English)
 
 > An independent community project. Not affiliated with, sponsored by, or endorsed by Anthropic. Claude and Anthropic are trademarks of Anthropic PBC, used here only to identify the product this tool works with.
 >

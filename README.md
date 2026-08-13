@@ -4,7 +4,7 @@
 
 > פרויקט קהילתי עצמאי. אינו מסונף ל-Anthropic, אינו מקבל ממנה חסות ואינו נתמך על ידה. Claude ו-Anthropic הם סימני מסחר של Anthropic PBC ומוזכרים כאן לזיהוי המוצר שאיתו הכלי עובד בלבד.
 >
-> נבדק מול Claude Desktop בווינדוס 11, אוגוסט 2026. אנת'רופיק כבר הוסיפו רינדור RTL מובנה בלשונית Code, והקוד ללשונית Chat קיים באפליקציה אך מושבת - ייתכן שהכלי הזה יתייתר בהמשך. תיבת ההקלדה עדיין LTR, וזה בדיוק הפער שהוא סוגר.
+> נבדק מול Claude Desktop בווינדוס 11, אוגוסט 2026. אנת'רופיק כבר הוסיפו רינדור RTL מובנה בלשונית Code, ולפי ממצאים פומביים של פרויקטים קהילתיים (ראו "פרויקטים מקבילים" ו-issue הרשמי המקושר למטה) תמיכה דומה ללשונית Chat קיימת אך מושבתת - ייתכן שהכלי הזה יתייתר בהמשך. תיבת ההקלדה עדיין LTR, וזה בדיוק הפער שהוא סוגר.
 
 תיבת ההקלדה של אפליקציית Claude Desktop בווינדוס נעולה על כיוון שמאל-לימין (LTR). כשמקלידים עברית, סימני הפיסוק קופצים לצד הלא נכון וטקסט מעורב (עברית + מספרים או אנגלית) מתערבב.
 
@@ -20,7 +20,7 @@
 
 - **שקוף וניתן לביקורת** - קובץ טקסט אחד, בלי קבצים מקומפלים, בלי רשת, בלי לוגים.
 - **לא נוגע באפליקציה** - שום שינוי בקבצי Claude Desktop.
-- **נכשל בבטחה** - הוא לא יכול לשבור כלום במחשב שלכם. עדכון של האפליקציה יכול לגרום לו להפסיק לעזור, למשל אם שם התהליך ישתנה, אבל אף פעם לא להשאיר משהו שבור. מקשי ה-Enter מוגדרים במצב pass-through, כך שהסקריפט מבחינה מבנית לא מסוגל לחסום שליחת הודעה.
+- **נכשל בבטחה** - הוא אינו משנה שום קובץ במחשב, והנזק המרבי האפשרי הוא תו בלתי-נראה עודף או קפיצת סמן. עדכון של האפליקציה יכול לגרום לו להפסיק לעזור, למשל אם שם התהליך ישתנה, אבל אף פעם לא להשאיר משהו שבור. מקשי ה-Enter מוגדרים במצב pass-through, כך שהסקריפט מבחינה מבנית לא מסוגל לחסום שליחת הודעה.
 
 ## התקנה (3 צעדים; במחשב נקי - בלי הרשאות אדמין)
 
@@ -62,7 +62,7 @@ winget install AutoHotkey.AutoHotkey --version 2.0.26 --scope user
 - הזריעה בתחילת הודעה מחכה בכוונה להפסקה של רבע שנייה בהקלדה, כדי שקפיצת הסמן (Ctrl+Home ו-Ctrl+End) לא תשתלב בין הקשות. בהקלדה רצופה ממש, בלי אף הפסקה של רבע שנייה, היא תמתין להפסקה הראשונה - ולכן הודעה שנכתבת ונשלחת בנשימה אחת עלולה לצאת לא-זרועה. בפועל הפסקה כזו כמעט תמיד קיימת, ו-Ctrl+Alt+J זורע מיד גם באמצע הקלדה.
 - חזרה נוספת לפוקוס בתוך 5 שניות מזריעת החזרה הקודמת לא זורעת שוב (מגבלת הקצב שלמעלה). בכל מצב שבו לא רוצים לחכות - Ctrl+Alt+J זורע מיד, תמיד.
 
-**וכמה זה עולה למחשב:** כלום שמורגש. הבודק מתעורר כשלוש פעמים בשנייה לכמה שאילתות חלונות שנמדדות במיקרו-שניות, והזריעה עצמה מקלידה תו בודד רק כשמשהו באמת קרה - שליחה, ירידת שורה, חזרת פוקוס. אין כתיבה לדיסק, אין רשת, ושום דבר לא נצבר בזיכרון. נמדד במכונה אמיתית: כ-15MB זיכרון ועומס מעבד ממוצע של פחות מאחוז בודד מליבה אחת - פחות מלשונית דפדפן רדומה.
+**וכמה זה עולה למחשב:** כלום שמורגש. הבודק מתעורר כשלוש פעמים בשנייה לכמה שאילתות חלונות שנמדדות במיקרו-שניות, והזריעה עצמה מקלידה תו בודד רק כשמשהו באמת קרה - שליחה, ירידת שורה, חזרת פוקוס. אין כתיבה לדיסק, אין רשת, ובזיכרון נשמרים רק מזהי חלונות, מצב זריעה וכותרת החלון - לעולם לא הקשות. נמדד במכונה אמיתית: כ-15MB זיכרון ועומס מעבד ממוצע של פחות מאחוז בודד מליבה אחת - פחות מלשונית דפדפן רדומה.
 
 הזריעה בחזרה לפוקוס נועדה לכסות את מה שהסקריפט לא יכול לראות - פתיחת שיחה או שליחה בלחיצת עכבר, שמרוקנות את התיבה בלי לירות שום קיצור. היא מתבצעת בנקודת הסמן ובלי להזיז אותו, כדי שטיוטה פתוחה לא תופרע. המחיר: אם חוזרים לטיוטה קיימת, נוסף לה תו בלתי-נראה שאינו משנה דבר בתצוגה אך כן נוסע עם ההודעה.
 
@@ -80,7 +80,7 @@ Ctrl+Alt+J מוסיף את התו בנקודת הסמן והוא התיקון ה
 ## מגבלות ידועות
 
 - **הסדר נכון, היישור לא.** זו המגבלה המהותית, והיא נמדדה: הרצנו את אותם משפטים מעורבים בכרומיום ומדדנו את המיקום של כל תו בנפרד. סדר התווים עם הזריעה **זהה תו-בתו** לאלמנט RTL אמיתי - מקפים, פסיקים, נקודה סופית, סוגריים, מספרים ותאריכים כולם במקום הנכון. מה שנשאר שונה הוא היישור בלבד: הטקסט צמוד לשוליים השמאליים במקום לימניים. בשורה או שתיים בקושי מרגישים; בפסקה ארוכה שנשברת לכמה שורות זה כן מרגיש, כי השורה האחרונה יושבת בצד שמאל. בתיבה שנעולה ל-`direction: ltr` כמו כאן, יישור הוא תכונת CSS ושום תו יוניקוד לא יכול לשנות אותו - זו תקרה מובנית של כל פתרון מבוסס מקלדת, ולא באג.
-- **התו נשלח עם ההודעה.** התו הבלתי-נראה הוא חלק מהטקסט שנשלח לקלוד (אין לו השפעה מעשית על התשובות - זהו תו כיווניות סטנדרטי שמודלים פוגשים כל הזמן בטקסט RTL), והוא נשאר בטקסט גם כשמעתיקים אותו למקום אחר. **חשוב למשפטנים ולמתכנתים:** אם מעתיקים טקסט מהודעה לתוך מסמך משפטי או לקוד, מומלץ להדביק דרך "הדבקה ללא עיצוב" או להסיר את התו; תווי כיוון בלתי-נראים יכולים לשנות סדר תצוגה של טקסט סמוך במסמך היעד, ו-GitHub וכלי פיתוח מסמנים אותם באזהרה.
+- **התו נשלח עם ההודעה.** התו הבלתי-נראה הוא חלק מהטקסט שנשלח לקלוד (אין לו השפעה מעשית על התשובות - זהו תו כיווניות סטנדרטי שמודלים פוגשים כל הזמן בטקסט RTL), והוא נשאר בטקסט גם כשמעתיקים אותו למקום אחר. **חשוב למשפטנים ולמתכנתים:** אם מעתיקים טקסט מהודעה לתוך מסמך משפטי או לקוד - שימו לב ש"הדבקה ללא עיצוב" **אינה** מסירה את התו: זהו תו טקסט רגיל, לא עיצוב. יש להסיר אותו מפורשות (חיפוש-והחלפה של U+202B או כלי ניקוי תווים בלתי-נראים), ובהודעה רב-שורתית ייתכנו כמה תווים כאלה. תווי כיוון בלתי-נראים יכולים לשנות סדר תצוגה של טקסט סמוך במסמך היעד, ו-GitHub וכלי פיתוח מסמנים אותם באזהרה.
 - **פעולות עכבר בתוך החלון אינן מזוהות** - מעבר לשיחה אחרת בסרגל הצד, פתיחת צ'אט חדש בלחיצה, או שליחה בלחיצה על כפתור השליחה. הסקריפט מזהה מקלדת בלבד, וכותרת החלון של קלוד אינה משתנה בין שיחות כך שאין לו אות אחר להישען עליו. מה שכן מכסה חלק גדול מהמקרים: כל חזרה לפוקוס על קלוד מכל מקום אחר מפעילה זריעה. אם בכל זאת יצא שבור - Ctrl+Alt+J פעם אחת מתקן, וגם שליחת ההודעה הבאה עם Enter מחזירה את הזריעה.
 - **מחיקה מוחקת גם את התו** - ניקוי כל הטיוטה (Ctrl+A והקלדה מחדש), Backspace בתחילת השורה, וגם מחיקת שורה שלמה אחורה: התו בלתי-נראה, ולכן Backspace אחד בולע אותו בלי שום סימן, והשורה קופצת חזרה ל-LTR. הסקריפט לא יודע על כך. אם התצוגה התקלקלה פתאום באמצע כתיבה או אחרי מחיקה - Ctrl+Alt+J מתקן מיד.
 - **זריעה לתוך טיוטה קיימת מזיזה את הסמן לסוף.** קורה כשהסקריפט מופעל כשטיוטה כבר פתוחה, או כשעוברים לעברית באמצע טיוטה שלא נזרעה. אם ערכתם באמצע המשפט, חזרו לנקודה עם העכבר.
@@ -94,7 +94,7 @@ Ctrl+Alt+J מוסיף את התו בנקודת הסמן והוא התיקון ה
 
 הכלי נכתב מתוך הנחה שתרצו לוודא בעצמכם שהוא בטוח. לכן הוא מופץ כקוד מקור קריא בלבד, לא כקובץ הרצה מקומפל: קובץ אחד, 264 שורות - כ-165 שורות קוד והשאר הערות תיעוד וריווח.
 
-**בשורה התחתונה, בלי מונחים:** הכלי לא מקליט את מה שאתם כותבים, לא שומר שום דבר ולא שולח שום דבר לשום מקום - אין לו בכלל יכולת רשת, קבצים או גישה ללוח ההעתקה, ואפשר לוודא זאת בקובץ עצמו ("בדיקה עצמית" למטה). הדבר היחיד שהוא מוסיף הוא תו כיווניות בלתי-נראה אחד בתיבת ההודעה של קלוד, והתו הזה נשלח כחלק מההודעה - מי שמעתיק טקסט מקלוד למסמך משפטי, ראו את האזהרה ב"מגבלות ידועות". ומי שמקליד חומר חסוי צריך לשמוע עובדה אחת במלואה: כמו כל כלי קיצורי מקלדת בווינדוס, הסקריפט נמצא בנתיב של כל הקשה במחשב - ומה שהוא עושה איתה הוא השוואה לרשימת הקיצורים שלו, ותו לא. הפרטים המלאים בהמשך הסעיף.
+**בשורה התחתונה, בלי מונחים:** הכלי לא מקליט את מה שאתם כותבים, לא שומר שום דבר ולא שולח שום דבר לשום מקום - אין לו בכלל יכולת רשת, קבצים או גישה ללוח ההעתקה, ואפשר לוודא זאת בקובץ עצמו ("בדיקה עצמית" למטה). הדבר היחיד שהוא מוסיף הוא תו כיווניות בלתי-נראה אחד בתיבת ההודעה של קלוד, והתו הזה נשלח כחלק מההודעה - מי שמעתיק טקסט מקלוד למסמך משפטי, ראו את האזהרה ב"מגבלות ידועות". ומי שמקליד חומר חסוי צריך לשמוע עובדה אחת במלואה: כמו כל כלי קיצורי מקלדת בווינדוס, הסקריפט נמצא בנתיב של כל הקשה במחשב - ומה שהוא עושה איתה הוא השוואה לרשימת הקיצורים שלו, ותו לא. והוא לעולם לא: מתחבר לחשבון, שולח בקשות לשירות, לוחץ "שלח", או קורא תשובות - הגישה לקלוד היא שלכם בלבד. הפרטים המלאים בהמשך הסעיף.
 
 **מה הוא עושה, במדויק:** כשחלון קלוד הראשי פעיל, הוא מקליד תו יוניקוד בלתי-נראה אחד לתיבת הקלט, יחד עם מקשי ניווט שמחזירים את הסמן למקומו (Ctrl+Home ו-Ctrl+End בזריעת תחילת הודעה, Home ו-End בזריעת שורה חדשה; בזריעה לתוך טיוטה קיימת הסמן נע לסוף - מתועד במגבלות). זה כל מה שהוא מקליד אי-פעם, והוא מכוון רק לחלון הראשי של קלוד - דיאלוגים מקומיים, כמו בוחר הקבצים, מסוננים לפי window class. בנוסף הוא בודק כל 300 מילישניות אילו חלונות של `Claude.exe` קיימים ומה כותרת החלון הפעיל, כדי לזהות מעבר לשיחה אחרת; הכותרת נשמרת בזיכרון בלבד לצורך השוואה, אינה נכתבת לדיסק ואינה נשלחת לשום מקום. כל מסלולי הזריעה האוטומטיים בודקים מחדש ברגע הביצוע שחלון קלוד הראשי פעיל ושפריסת המקלדת עברית.
 
@@ -176,7 +176,7 @@ Get-AppLockerFileInformation -Path '<path>\AutoHotkey64.exe'
 
 ## רישיון
 
-MIT. ראו [LICENSE](LICENSE).
+MIT. ראו [LICENSE](LICENSE). הרישיון חל על הסקריפט בלבד ואינו מעניק שום זכות בסימני Claude או Anthropic. AutoHotkey הוא מפרש עצמאי ברישיון GPLv2, מתקבל בנפרד מהמקור הרשמי ואינו מופץ במאגר הזה.
 
 </div>
 
@@ -198,7 +198,7 @@ It affects **only what you type**. Claude's own responses are rendered exactly a
 
 **Timing:** seeding is asynchronous - it runs on short timers, not at the instant of the event. After launching the script or returning focus to the Claude window, the seed lands within about 0.6 seconds - the number that matters most day to day. After Enter it takes about a quarter second, after Shift+Enter it is effectively immediate (60ms), and after Ctrl+N about half a second, giving the new chat's input time to mount. Start-of-message seeding deliberately waits for a 250ms pause in typing so the caret jump never interleaves with keystrokes. Under truly continuous typing with no quarter-second pause it keeps waiting for the first one - so a message typed and sent in a single breath can go out unseeded; in practice such a pause almost always occurs, and Ctrl+Alt+J seeds immediately even mid-typing. A second focus return within 5 seconds of the previous one is rate-limited and seeds nothing. Ctrl+Alt+J always seeds immediately.
 
-**Footprint:** nothing you can feel. The watcher wakes about three times a second for a few microsecond-scale window queries, and seeding types a single character only when something actually happened - a send, a line break, a focus return. No disk writes, no network, nothing accumulates in memory. Measured on a real machine: about 15MB of RAM and a sustained CPU load under one percent of a single core - less than an idle browser tab.
+**Footprint:** nothing you can feel. The watcher wakes about three times a second for a few microsecond-scale window queries, and seeding types a single character only when something actually happened - a send, a line break, a focus return. No disk writes, no network; memory holds only window handles, seed state and the window title - never keystrokes. Measured on a real machine: about 15MB of RAM and a sustained CPU load under one percent of a single core - less than an idle browser tab.
 
 ## Install
 
@@ -221,6 +221,8 @@ Uninstall: delete the shortcut from `shell:startup` and exit the script from its
 
 ## Security and privacy
 
+**The bottom line, in plain terms:** this tool does not record what you type, stores nothing, and sends nothing anywhere - it has no network, file, or clipboard capability at all, and you can verify that in the file itself (self-audit below). The only thing it ever adds is one invisible direction character inside Claude's message box, sent as part of your own message - see Known limitations before pasting message text into legal documents or code. It never signs in, never sends requests to the service, never presses Send, and never reads responses - the access to Claude is yours alone.
+
 Distributed as readable source only, never as a compiled binary. The script types exactly one invisible character plus navigation keys that normally restore the caret (Ctrl+Home / Ctrl+End; seeding into an existing draft moves the caret to the end - see Known limitations), aimed only at Claude's main window; native dialogs are filtered out by window class, and every scheduled seed re-checks its conditions at the moment it fires. It also polls every 300ms for `Claude.exe` windows and reads the active window title to detect a conversation switch; the title is held in memory for comparison only, never written to disk or transmitted.
 
 Like every hotkey utility it installs a standard Windows low-level keyboard hook. Each key event is only compared against the registered hotkeys, and nothing is stored (`KeyHistory 0`, `ListLines 0`), logged, or transmitted. The hook does not run on the Secure Desktop, so it never sees UAC prompts or the logon screen; it is, like any low-level keyboard hook, in the path of every keystroke in the interactive session, including keystrokes to elevated windows - so the protection here is what the callback does with the event, not a permission boundary.
@@ -236,11 +238,15 @@ AutoHotkey_2.0.26.zip        43522AA3122A57784AC5DB30ABF85C2244475C36ACD7796E2C9
 
 Recommended: firewall-block `AutoHotkey64.exe` outbound - the tool is fully offline.
 
+**Verifying the script itself, and what an update means:** the script has no self-update mechanism of any kind - the copy you downloaded and audited is exactly what runs on your machine, until you replace it yourself. Download from a tagged release rather than main, keep the copy you audited, and treat any replacement of the file as a fresh audit - at 264 lines, diffing two versions takes minutes.
+
+**Found a security issue?** Open an issue, or use "Report a vulnerability" under the repository's Security tab if you prefer a private report.
+
 **For IT administrators:** runs entirely in user space - per-user install, no services, no drivers, no persistence beyond a Startup shortcut the user creates. The EDR-relevant surface is a WH_KEYBOARD_LL hook, SendInput of one Unicode character plus two navigation chords into the foreground window when it belongs to `Claude.exe`, the two DllCalls above, and a 300ms window-list poll. Under WDAC or AppLocker, AutoHotkey is unsigned so no publisher rule is possible; allow the interpreter (`AutoHotkey64.exe`) by hash, generated from your own installed binary with `Get-AppLockerFileInformation`, since those engines use the Authenticode hash rather than `Get-FileHash` output. Do not rely on a path rule for the per-user install directory, which the user can write to.
 
 ## Known limitations
 
-Character order is fixed but alignment stays left - in an input locked to `direction: ltr`, alignment is a CSS property that no control character can change, so this is an inherent ceiling of any keyboard-level approach rather than a bug. The invisible character travels with your message and survives copy-paste, so strip it before pasting message text into legal documents or code. Mouse actions inside the window - switching chats, starting a new chat, or clicking send - are invisible to the script, because the window title does not change between conversations and there is no other signal; returning focus to Claude from anywhere else does reseed, which covers most of those cases, and Ctrl+Alt+J covers the rest. That focus-return seed is placed at the caret without moving it, so an open draft is never disturbed, at the cost of one extra invisible character in that draft. Clearing a draft also clears the seed, and so does deleting a line back through its start - the character is invisible, so one Backspace swallows it with no cue until the line renders LTR again; Ctrl+Alt+J restores it. A seed landing in an existing draft moves the caret to the end. Picking a slash command or mention with Enter counts as a send, so one extra character may be seeded; it self-resets on the next real send. Pasted multi-line text is protected on its first line only, since the script never reads the clipboard. If focus is in another field of the Claude window at seed time, a single character may land there - clear it with Ctrl+A then Delete. If Claude runs elevated and the script does not, Windows UIPI silently blocks injection; run both unelevated.
+Character order is fixed but alignment stays left - in an input locked to `direction: ltr`, alignment is a CSS property that no control character can change, so this is an inherent ceiling of any keyboard-level approach rather than a bug. The invisible character travels with your message and survives copy-paste - including plain-text paste, since it is a text character rather than formatting - so remove it explicitly (find-and-replace U+202B; multiline messages may carry several marks) before pasting message text into legal documents or code. Mouse actions inside the window - switching chats, starting a new chat, or clicking send - are invisible to the script, because the window title does not change between conversations and there is no other signal; returning focus to Claude from anywhere else does reseed, which covers most of those cases, and Ctrl+Alt+J covers the rest. That focus-return seed is placed at the caret without moving it, so an open draft is never disturbed, at the cost of one extra invisible character in that draft. Clearing a draft also clears the seed, and so does deleting a line back through its start - the character is invisible, so one Backspace swallows it with no cue until the line renders LTR again; Ctrl+Alt+J restores it. A seed landing in an existing draft moves the caret to the end. Picking a slash command or mention with Enter counts as a send, so one extra character may be seeded; it self-resets on the next real send. Pasted multi-line text is protected on its first line only, since the script never reads the clipboard. If focus is in another field of the Claude window at seed time, a single character may land there - clear it with Ctrl+A then Delete. If Claude runs elevated and the script does not, Windows UIPI silently blocks injection; run both unelevated.
 
 ## App updates
 
@@ -256,4 +262,4 @@ The ChatGPT desktop app on Windows (the OpenAI.Codex package, which contains bot
 
 Built by [Legal Mind](https://legalmind.co.il), an Israeli AI-implementation and training practice for law firms. This tool grew out of our own daily need to type Hebrew in Claude.
 
-MIT License.
+MIT License - covering this script only; it grants no rights in the Claude or Anthropic trademarks. AutoHotkey is an independently obtained GPLv2 interpreter, not distributed by this repository.

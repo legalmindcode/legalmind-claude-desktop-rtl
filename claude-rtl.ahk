@@ -29,6 +29,16 @@
 ;                      recovery; Claude only; works even when seeding is
 ;                      toggled off or the layout is English)
 ;    Ctrl+Alt+Shift+R  toggle automatic seeding on/off (global)
+;
+;  Repair seeding (v1.2): deleting through the invisible mark or acting
+;  with the mouse used to require the manual hotkey. Now a deletion burst
+;  or a click inside Claude's main window triggers one blind repair seed
+;  at the caret - rate-limited to one per 3 seconds, Hebrew layout only,
+;  re-checked at fire time. Deletions also mark the window unseeded, so
+;  the ordinary start-of-message path recovers even when the repair is
+;  rate-limited. NOTE: the LButton hotkey means AutoHotkey installs a
+;  mouse hook in addition to the keyboard hook; the callback only reacts
+;  while Claude's main window is active, and clicks always pass through.
 ; =============================================================================
 
 KeyHistory 0
@@ -44,6 +54,7 @@ global claudeGone := 0               ; watcher ticks with no Claude present
 global seedDeadline := 0             ; latest tick a deferred seed may wait for
 global prevActive := 0               ; last Claude window seen as active
 global lastSeedAt := 0               ; tick of the last activation seed
+global lastRepairAt := 0             ; tick of the last repair seed (own limiter)
 
 A_IconTip := "Claude RTL: on"
 A_TrayMenu.Add(TOGGLE_LABEL, (*) => ToggleRtl())
@@ -229,6 +240,12 @@ ClearToolTip() {
 ~+NumpadEnter:: ArmNewLineSeed()
 ~^n::           AfterNewChat()
 ^!j::           ManualSeed()
+~Backspace::    ArmRepairSeed(true)  ; deletion may have destroyed the seed -
+~Delete::       ArmRepairSeed(true)  ; mark unseeded so the watcher's start
+                                     ; dance is a second recovery path
+~LButton::      ArmRepairSeed(false) ; click may have sent or switched chat -
+                                     ; gentle caret repair only (no dance,
+                                     ; so a mid-draft click never jumps)
 
 #HotIf
 
@@ -261,4 +278,44 @@ ManualSeed() {
         return                       ; never type into dialogs, even manually
     SendText(SEED)
     winSeeded[hwnd] := true          ; user handled it - no automatic follow-up
+}
+
+; ---- repair seeding ---------------------------------------------------------
+; The script cannot read the draft, so it cannot know whether a deletion
+; consumed the seed or a click emptied the input. Instead: after each burst
+; of deletions or clicks, plant one seed at the caret "just in case". In
+; the common breakage cases the caret is exactly where the seed belongs
+; (deleted back to line start; input emptied by a mouse send or a chat
+; switch). When nothing was actually broken, the cost is one spare inert
+; invisible character in the draft. Bounded by: Hebrew layout only, main
+; Claude window only, at most one repair per 3 seconds, and a wait for a
+; pause in typing so a repair never lands mid-word.
+
+ArmRepairSeed(unseed := false) {
+    global winSeeded
+    if unseed {                      ; deletions: the message-start seed may
+        hwnd := ClaudeMainActive()   ; be gone - let the watcher's start
+        if hwnd                      ; dance recover even if the repair
+            winSeeded[hwnd] := false ; below is rate-limited or deferred
+    }
+    SetTimer(RepairSeed, -450)       ; restarted on every event, so one
+}                                    ; repair per burst, after it ends
+
+RepairSeed() {
+    global winSeeded, lastRepairAt
+    if (!rtlOn || !IsHebrewLayout())
+        return
+    hwnd := ClaudeMainActive()
+    if !hwnd
+        return
+    if (A_TickCount - lastRepairAt < 3000)
+        return                       ; own limiter - never couples with the
+                                     ; focus-return seed's rate limit
+    if (A_TimeIdlePhysical < 250) {  ; user is typing again - wait for a gap;
+        SetTimer(RepairSeed, -200)   ; no deadline: a repair is opportunistic,
+        return                       ; and the next send reseeds anyway
+    }
+    SendText(SEED)
+    lastRepairAt := A_TickCount
+    winSeeded[hwnd] := true          ; suppress the watcher's Ctrl+Home dance
 }
